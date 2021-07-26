@@ -1,3 +1,2 @@
-this is a collaboration exercise.
-Names: `abu-bakarr` & `tihtina58`
+this is a collaboration exercise, done by `abu-bakarr` & `tihtina58`
 
