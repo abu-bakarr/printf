@@ -1,53 +1,47 @@
 #include "holberton.h"
-#include <unistd.h>
-
 /**
-* _printf - prints a string with functionality
-* @format: the string to print
-*
-* Return: 0 Always success
-*/
-
+** _printf - gives output
+** @format: char
+** Return: num of chars
+**/
 int _printf(const char *format, ...)
 {
-	int i, j, counter = 0;
-	va_list ap;
-	pt_t types[] = {
-		{"c", print_c},
-		{"s", print_s},
-		{"d", print_d},
-		{"%", print_p},
-		{"i", print_d},
-		{NULL, NULL},
+	unsigned int i, j, count;
+	char mod;
+	va_list arguments;
+
+	pstruct print_func [] = {
+		{'c', print_char}, {'s', print_string}, {'i', print_number},
+		{'R', print_rot13}, {'d', print_number}, {'b', print_binary},
+		{'r', print_reverse}, {'%', print_percent}, {'\0', NULL}
 	};
-	if (format == NULL)
-		return (-1);
-	va_start(ap, format);
-	i = 0;
-	while (format != NULL && format[i] != '\0')
+	va_start(arguments, format);
+	i = 0, j = 0, count = 0;
+	while (format && format[i])
 	{
-		if (format[i] == '%')
+		if (!(format[i] == '%' && format[i + 1]))
+			{_putchar(format[i]); count++; i++; continue; } /*move to next argument*/
+		mod = format[i + 1];
+		while (print_func[j].type)
 		{
-			i++;
-			if (format[i] == '\0')
+			if (print_func[j].type == mod)
 			{
-				return (-1);
+				count += print_func[j].printer(arguments);
+				i++;
+				break;
 			}
-			j = 0;
-			while (types[j].fs != NULL)
-			{
-				if (*(types[j].fs) == format[i])
-					counter += types[j].f(ap);
-				j++;
-			}
-			i++;
+			j++;
 		}
-		if (format[i] != '%' && format[i] != '\0')
+		if (print_func[j].type == '\0')
 		{
-			counter += _putchar(format[i]);
-			i++;
+			_putchar('%');
+			_putchar(mod);
+			count += 2;
+			i++; /*move past %*/
 		}
+		j = 0; /*reset transverse for type if matched or hits null*/
+		i++; /*move past mod*/
 	}
-	va_end(ap);
-	return (counter);
+	va_end(arguments);
+	return (count);
 }
