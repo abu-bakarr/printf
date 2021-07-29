@@ -1,36 +1,33 @@
-#ifndef header_file
-#define header_file
+#ifndef _holberton_h
+#define _holberton_h
+#include <stdlib.h> /*NULL*/
+#include <stdarg.h> /*va_list*/
+#include <limits.h> /*INT_MIN*/
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
-/**
- * struct typeprint - create libraries
- * @typec: char
- * @fun: point void of lista
- * Description: struct
- */
-typedef struct typeprint
-{
-	char typec;
-	int (*fun)(va_list lista);
-} typedate;
-/*Second function for _printf */
-int opFunction(int cont, va_list list, typedate tipos[],
-const char *format);
-int printUnk(int i, int spaces, const char *format, int band);
-int _strcmp(char *s1, char *s2);
-int _putchar(char c);
 int _printf(const char *format, ...);
-int printString(va_list lista);
-int printChar(va_list lista);
-int printDecimal(va_list lista);
-int printInteger(va_list lista);
-int printBinary(va_list lista);
-int printUnsigned(va_list lista);
-int printUnsignedDigit(unsigned int num, int *cont);
-int printOctal(va_list lista);
-int printDigitOctal(unsigned int num, int *cont);
-char *_littleBuffer(int size);
-#endif /* Libraries Printf abu-bkarr and tihtina58 */
+
+/**
+* struct printf_functions - struct to match type with printer funcitons
+* @type: input to determine type of printf function
+* @printer: specific printf function
+* Description: the the correct copy function to use
+**/
+typedef struct printf_functions
+{
+	char type;
+	int (*printer)();
+} pstruct;
+
+/* _PUCHAR.C */
+int _putchar(char c);
+
+/* UTIL_CHARACTERS */
+int print_percent(void);
+int print_char(va_list arg);
+int print_string(va_list arg);
+int print_reverse(va_list arg);
+/* UTIL_NUMBERS */
+int print_number(va_list arg);
+int print_binary(va_list arg);
+int print_rot13(va_list arg);
+#endif /* _holberton_h */
